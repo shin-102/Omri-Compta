@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "OMRI COMPTA — Expert comptable à Larache",
+  description =
+    "OMRI COMPTA accompagne les entreprises, entrepreneurs et professionnels dans leurs besoins comptables, fiscaux et de gestion à Larache.",
+} = Astro.props;
+
+const siteUrl = "https://omri-compta.ma";
+const ogImage = `${siteUrl}/images/og-image.jpg`;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="canonical" href={siteUrl} />
+
+    <meta name="theme-color" content="#14532d" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_MA" />
+    <meta property="og:site_name" content="OMRI COMPTA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={ogImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      name: "OMRI COMPTA",
+      description,
+      url: siteUrl,
+      telephone: "+212539525229",
+      email: "omri.compta@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Larache",
+        addressCountry: "MA",
+      },
+      areaServed: {
+        "@type": "City",
+        name: "Larache",
+      },
+    })} />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

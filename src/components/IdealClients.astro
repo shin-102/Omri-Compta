@@ -1,0 +1,124 @@
+---
+const clientTypes = [
+    "entrepreneurs",
+    "TPE & PME",
+    "professions libérales",
+    "commerçants",
+    "porteurs de projets",
+];
+const longestClientType = "professions libérales";
+---
+
+<section class="section overflow-hidden bg-ink" id="clients">
+    <div class="container-site">
+        <div class="mx-auto ">
+            <p class="eyebrow">Un accompagnement adapté</p>
+            <h2 class="mt-8 font-display text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-surface sm:text-6xl md:text-7xl lg:text-[7.5rem]">
+                Nous accompagnons les{" "}
+                <span
+                    class="relative inline-grid align-baseline text-primary-700"
+                    aria-live="polite"
+                >
+                    {" "}
+                    <!-- Keeps the animated phrase width stable. -->{" "}
+                    <span
+                        class="invisible col-start-1 row-start-1 whitespace-nowrap"
+                        aria-hidden="true"
+                    >
+                        {" "}
+                        {longestClientType}{" "}
+                    </span>{" "}
+                    <!-- Visible clipping window. -->{" "}
+                    <span class="col-start-1 row-start-1 inline-block h-[1.12em] overflow-hidden whitespace-nowrap">
+                        {" "}
+                        <span
+                            id="client-slider"
+                            class="flex flex-col will-change-transform"
+                        >
+                            {" "}
+                            {clientTypes.map((client) => (
+                                <span
+                                    class="flex h-[1.12em] shrink-0 items-center whitespace-nowrap"
+                                    data-client-type={client}
+                                >
+                                    {" "}
+                                    {client}{" "}
+                                </span>
+                            ))}{" "}
+                            <span
+                                class="flex h-[1.12em] shrink-0 items-center whitespace-nowrap"
+                                aria-hidden="true"
+                            >
+                                {" "}
+                                {clientTypes[0]}{" "}
+                            </span>{" "}
+                        </span>{" "}
+                    </span>{" "}
+                </span>{" "}
+                <span>dans le développement de leur activité.</span>
+            </h2>
+            <p class="body-large mt-10 max-w-4xl">
+                De la création de votre activité à son développement, nous vous
+                accompagnons avec une approche adaptée à votre situation et à
+                vos objectifs.
+            </p>
+        </div>
+    </div>
+    <script>
+        const slider = document.querySelector("#client-slider");
+        if (slider instanceof HTMLElement) {
+            const items = slider.querySelectorAll<HTMLElement>(":scope > span");
+            const reducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)",
+            );
+            let currentIndex = 0;
+            let intervalId: number | undefined;
+            const getItemHeight = () => {
+                return items[0]?.getBoundingClientRect().height ?? 0;
+            };
+            const moveTo = (index: number, animate = true) => {
+                const itemHeight = getItemHeight();
+                slider.style.transition = animate
+                    ? "transform 650ms cubic-bezier(0.22, 1, 0.36, 1)"
+                    : "none";
+                slider.style.transform = `translateY(-${index * itemHeight}px)`;
+            };
+            const rotateClient = () => {
+                if (reducedMotion.matches) return;
+                currentIndex += 1;
+                moveTo(currentIndex);
+                if (currentIndex === items.length - 1) {
+                    window.setTimeout(() => {
+                        currentIndex = 0;
+                        moveTo(0, false);
+                    }, 700);
+                }
+            };
+            const start = () => {
+                if (reducedMotion.matches || intervalId !== undefined) return;
+                intervalId = window.setInterval(rotateClient, 2400);
+            };
+            const stop = () => {
+                if (intervalId !== undefined) {
+                    window.clearInterval(intervalId);
+                    intervalId = undefined;
+                }
+            };
+            const handleMotionPreference = () => {
+                stop();
+                if (reducedMotion.matches) {
+                    currentIndex = 0;
+                    moveTo(0, false);
+                } else {
+                    start();
+                }
+            };
+            window.addEventListener("resize", () => {
+                moveTo(currentIndex, false);
+            });
+            reducedMotion.addEventListener("change", handleMotionPreference);
+            moveTo(0, false);
+            start();
+        }
+    </script>
+</section>

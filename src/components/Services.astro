@@ -1,0 +1,213 @@
+---
+const services = [
+  {
+    number: "01",
+    title: "Création & constitution",
+    description:
+      "Structurer votre projet dès le départ et vous accompagner dans les démarches nécessaires au lancement de votre activité.",
+    items: [
+      "Choix de la forme juridique",
+      "Formalités de création",
+      "Mise en place comptable",
+    ],
+  },
+  {
+    number: "02",
+    title: "Comptabilité",
+    description:
+      "Une comptabilité claire et structurée pour suivre votre activité et disposer d'une information financière fiable.",
+    items: [
+      "Tenue comptable",
+      "Bilan & comptes",
+      "Suivi financier",
+    ],
+  },
+  {
+    number: "03",
+    title: "Fiscalité",
+    description:
+      "Gérer vos obligations fiscales avec méthode et bénéficier d'un accompagnement adapté à votre situation.",
+    items: [
+      "Déclarations fiscales",
+      "TVA & IS",
+      "Assistance lors des contrôles",
+    ],
+  },
+  {
+    number: "04",
+    title: "Social & paie",
+    description:
+      "Prendre en charge les démarches administratives liées à vos salariés et à vos obligations sociales.",
+    items: [
+      "Bulletins de paie",
+      "Déclarations sociales",
+      "Contrats & formalités",
+    ],
+  },
+  {
+    number: "05",
+    title: "Conseil & gestion",
+    description:
+      "Transformer vos données financières en informations utiles pour mieux comprendre et piloter votre entreprise.",
+    items: [
+      "Analyse de rentabilité",
+      "Tableaux de bord",
+      "Prévisionnel & budget",
+    ],
+  },
+  {
+    number: "06",
+    title: "Étude de projets",
+    description:
+      "Évaluer la viabilité économique et financière d'un projet avant de prendre une décision.",
+    items: [
+      "Étude de faisabilité",
+      "Analyse financière",
+      "Business plan",
+    ],
+  },
+];
+---
+
+<section class="section bg-surface" id="expertise">
+  <div class="container-site">
+    <div class="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      <!-- Intro -->
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <p class="eyebrow">Nos expertises</p>
+
+        <h2 class="section-heading mt-5 max-w-xl">
+          Ce qu'il faut pour faire avancer votre activité.
+        </h2>
+
+        <p class="body-large mt-7 max-w-md">
+          De la création aux décisions de gestion, nous intervenons sur les
+          sujets qui comptent pour la vie et le développement de votre
+          entreprise.
+        </p>
+
+        <a
+          href="#contact"
+          class="mt-9 inline-flex items-center gap-3 text-sm font-bold text-primary-700 transition hover:text-primary-500"
+        >
+          Parler de votre situation
+          <span aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="stroke-primary-500">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.50" d="M6 18L18 6M18 15V6H9"/>
+              </svg>
+          </span>
+        </a>
+      </div>
+
+      <!-- Services -->
+      <div class="border-t border-border">
+        {
+          services.map((service) => (
+            <article class="group border-b border-border">
+              <button
+                type="button"
+                class="service-trigger flex w-full items-start gap-5 py-7 text-left sm:gap-8 sm:py-8"
+                aria-expanded="false"
+              >
+                <span class="pt-1 text-sm font-bold text-primary-600">
+                  {service.number}
+                </span>
+
+                <span class="flex min-w-0 flex-1 items-center justify-between gap-6">
+                  <span class="font-display text-2xl font-bold tracking-tight text-ink transition group-hover:text-primary-700 sm:text-3xl">
+                    {service.title}
+                  </span>
+
+                  <span
+                    class="service-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-lg font-normal text-muted transition duration-300 group-hover:border-primary-600 group-hover:text-primary-600"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </span>
+              </button>
+
+              <div class="service-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out">
+                <div class="overflow-hidden">
+                  <div class="pb-8 pl-[3.25rem] sm:pl-[4.5rem]">
+                    <p class="max-w-2xl leading-7 text-muted">
+                      {service.description}
+                    </p>
+
+                    <ul class="mt-6 grid gap-3 sm:grid-cols-3">
+                      {
+                        service.items.map((item) => (
+                          <li class="flex items-start gap-2 text-sm font-medium text-ink">
+                            <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-600" />
+                            <span>{item}</span>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const triggers =
+      document.querySelectorAll<HTMLButtonElement>(".service-trigger");
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const article = trigger.closest("article");
+
+        if (!article) return;
+
+        const content = article.querySelector<HTMLElement>(".service-content");
+        const icon = article.querySelector<HTMLElement>(".service-icon");
+
+        if (!content || !icon) return;
+
+        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+
+        // Keep only one service expanded at a time.
+        triggers.forEach((otherTrigger) => {
+          if (otherTrigger === trigger) return;
+
+          const otherArticle = otherTrigger.closest("article");
+          const otherContent =
+            otherArticle?.querySelector<HTMLElement>(".service-content");
+          const otherIcon =
+            otherArticle?.querySelector<HTMLElement>(".service-icon");
+
+          otherTrigger.setAttribute("aria-expanded", "false");
+
+          if (otherContent) {
+            otherContent.classList.remove("grid-rows-[1fr]");
+            otherContent.classList.add("grid-rows-[0fr]");
+          }
+
+          if (otherIcon) {
+            otherIcon.textContent = "+";
+            otherIcon.classList.remove("rotate-45");
+          }
+        });
+
+        trigger.setAttribute("aria-expanded", String(!isOpen));
+
+        if (isOpen) {
+          content.classList.remove("grid-rows-[1fr]");
+          content.classList.add("grid-rows-[0fr]");
+          icon.textContent = "+";
+          icon.classList.remove("rotate-45");
+        } else {
+          content.classList.remove("grid-rows-[0fr]");
+          content.classList.add("grid-rows-[1fr]");
+          icon.textContent = "+";
+          icon.classList.add("rotate-45");
+        }
+      });
+    });
+  </script>
+</section>
